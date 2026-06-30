@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vortex Performance | Athlete Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#2d3449",
+                    "primary-fixed": "#d8e2ff",
+                    "on-primary-fixed-variant": "#004493",
+                    "on-primary": "#002e69",
+                    "on-primary-container": "#00285c",
+                    "on-primary-fixed": "#001a41",
+                    "on-secondary-container": "#b4b5b5",
+                    "primary": "#adc6ff",
+                    "tertiary": "#ffb59a",
+                    "tertiary-fixed-dim": "#ffb59a",
+                    "on-tertiary": "#5a1b00",
+                    "background": "#0b1326",
+                    "surface-tint": "#adc6ff",
+                    "tertiary-container": "#fc5b00",
+                    "on-tertiary-fixed": "#370e00",
+                    "surface-container": "#171f33",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-low": "#131b2e",
+                    "on-tertiary-fixed-variant": "#802a00",
+                    "on-tertiary-container": "#4f1700",
+                    "error": "#ffb4ab",
+                    "surface-container-lowest": "#060e20",
+                    "secondary-fixed": "#e2e2e2",
+                    "on-surface": "#dae2fd",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-error": "#690005",
+                    "surface-bright": "#31394d",
+                    "inverse-primary": "#005bc1",
+                    "surface-container-high": "#222a3d",
+                    "on-secondary": "#2f3131",
+                    "outline": "#8b90a0",
+                    "inverse-on-surface": "#283044",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "secondary": "#c6c6c7",
+                    "secondary-container": "#454747",
+                    "outline-variant": "#414755",
+                    "surface-dim": "#0b1326",
+                    "surface": "#0b1326",
+                    "surface-container-highest": "#2d3449",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "primary-container": "#4b8eff",
+                    "inverse-surface": "#dae2fd",
+                    "on-secondary-fixed-variant": "#454747",
+                    "error-container": "#93000a",
+                    "on-background": "#dae2fd",
+                    "tertiary-fixed": "#ffdbce",
+                    "on-surface-variant": "#c1c6d7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-desktop": "32px",
+                    "container-max": "1440px",
+                    "margin-mobile": "16px",
+                    "gutter": "16px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-md": ["Inter"],
+                    "display-metrics": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "data-mono": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display-metrics": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "data-mono": ["16px", {"lineHeight": "20px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel-heavy {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .frost-gradient {
+            background: linear-gradient(135deg, rgba(173, 198, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+        }
+        .active-glow {
+            box-shadow: 0 0 20px rgba(173, 198, 255, 0.15);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container/80 backdrop-blur-xl border-r border-white/10 z-50 flex flex-col py-8">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/30">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of an elite female ski athlete with focused eyes, wearing a sleek aerodynamic carbon fiber helmet and reflective blue goggles resting on top. The lighting is cold and crisp, highlighting her athletic features against a blurred mountain backdrop with high-performance intensity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5I3YCio7SvFgDMNV03xI72qQ8rWhRguMn0tsk6V-YW2Q8IG9d_6c72EYBKnN_3AvqsRuaKGvecycQyCsJIccyFjDWYE2u9ozrxndoIY-0mi-wyatmtixssNdR2-9I2nyR4BPMkZomSyzRfvPOZBLuB8K6vOOX1OsfY0UHFmrvRTt7YxO-o46UJLH8feu501TX_Mbwab8Sw-xx9GgV2tc8SJydvRTPX4dafR_HA2A4hoi_Z-EBb2Ubd2oIo8s0J_R3MIHxKAGxWmg"/>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface leading-tight">Jess</h2>
+<p class="font-label-caps text-[10px] text-on-surface-variant tracking-wider uppercase">Giant Slalom Specialist</p>
+</div>
+</div>
+<nav class="flex-grow space-y-1">
+<!-- Active Tab: Performance -->
+<a id="nav-performance" data-tab="performance" class="flex items-center gap-3 py-3 text-primary font-bold border-l-4 border-tertiary-container pl-4 transition-colors hover:bg-white/5 group cursor-pointer">
+<span class="material-symbols-outlined nav-icon" style="font-variation-settings: 'FILL' 1;">speed</span>
+<span class="font-label-caps text-label-caps">Performance</span>
+</a>
+<a id="nav-gate-splits" data-tab="gate-splits" class="flex items-center gap-3 py-3 text-on-surface-variant pl-5 border-l-4 border-transparent transition-colors hover:bg-white/5 group cursor-pointer">
+<span class="material-symbols-outlined nav-icon">timer</span>
+<span class="font-label-caps text-label-caps">Gate Splits</span>
+</a>
+<a id="nav-video-analysis" data-tab="video-analysis" class="flex items-center gap-3 py-3 text-on-surface-variant pl-5 border-l-4 border-transparent transition-colors hover:bg-white/5 group cursor-pointer">
+<span class="material-symbols-outlined nav-icon">videocam</span>
+<span class="font-label-caps text-label-caps">Video Analysis</span>
+</a>
+<a id="nav-season-rankings" data-tab="season-rankings" class="flex items-center gap-3 py-3 text-on-surface-variant pl-5 border-l-4 border-transparent transition-colors hover:bg-white/5 group cursor-pointer">
+<span class="material-symbols-outlined nav-icon">leaderboard</span>
+<span class="font-label-caps text-label-caps">Season Rankings</span>
+</a>
+<a id="nav-training-logs" data-tab="training-logs" class="flex items-center gap-3 py-3 text-on-surface-variant pl-5 border-l-4 border-transparent transition-colors hover:bg-white/5 group cursor-pointer">
+<span class="material-symbols-outlined nav-icon">event_note</span>
+<span class="font-label-caps text-label-caps">Training Logs</span>
+</a>
+</nav>
+<div class="px-6 mb-8">
+<button class="w-full py-3 bg-on-surface text-surface font-bold font-label-caps text-label-caps rounded-lg hover:opacity-90 active:scale-95 transition-all">
+                Start Session
+            </button>
+</div>
+<div class="mt-auto px-1 space-y-1">
+<a class="flex items-center gap-3 py-2 text-on-surface-variant pl-5 transition-colors hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant pl-5 transition-colors hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+</div>
+</aside>
+
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 backdrop-blur-md bg-background/40 border-b border-white/5 z-40 flex justify-between items-center px-8">
+<h1 class="font-headline-md text-headline-md font-black tracking-tighter text-on-surface uppercase">Vortex Performance</h1>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-low border border-white/10 rounded-full pl-10 pr-4 py-1.5 text-sm font-body-sm focus:outline-none focus:border-primary/50 transition-all w-64" placeholder="Search sessions..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-tertiary-container rounded-full"></span>
+</button>
+<button class="hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-8 pb-12 min-h-screen relative">
+<!-- Ambient Atmospheric Layer -->
+<div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
+
+</div>
+<div class="max-w-7xl mx-auto space-y-8">
+
+<!-- 1. VIEW: PERFORMANCE -->
+<div id="view-performance" class="space-y-8 tab-content">
+<!-- Hero Stats Bento -->
+<section class="grid grid-cols-12 gap-6">
+<!-- Main Hero: Season Ranking -->
+<div class="col-span-8 glass-panel rounded-xl overflow-hidden flex flex-col justify-between relative p-8 frost-gradient active-glow">
+<div class="absolute top-0 right-0 p-8 opacity-20">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'wght' 100;">snowboarding</span>
+</div>
+<div class="z-10">
+<span class="font-label-caps text-label-caps text-primary tracking-[0.2em] mb-2 block uppercase">Season Global Ranking</span>
+<div class="flex items-baseline gap-4">
+<span class="font-display-metrics text-display-metrics text-white">#04</span>
+<span class="text-tertiary font-headline-md text-headline-md flex items-center gap-1">
+<span class="material-symbols-outlined">arrow_drop_up</span> 2 spots
+                            </span>
+</div>
+</div>
+<div class="z-10 flex gap-12 mt-12">
+<div>
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1 uppercase">Recent Speed Peak</span>
+<span class="font-headline-lg text-headline-lg text-white">128.4 <span class="text-body-sm font-normal text-on-surface-variant">km/h</span></span>
+</div>
+<div>
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1 uppercase">Avg. Reaction Time</span>
+<span class="font-headline-lg text-headline-lg text-white">0.18 <span class="text-body-sm font-normal text-on-surface-variant">sec</span></span>
+</div>
+</div>
+</div>
+<!-- Recovery Status Widget -->
+<div class="col-span-4 glass-panel rounded-xl p-6 flex flex-col items-center justify-center text-center">
+<div class="relative w-32 h-32 mb-4">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-white/10" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="36.4" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-metrics text-[32px] text-white">92%</span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface uppercase mb-1">Recovery Status</span>
+<span class="text-primary font-body-sm text-body-sm">Optimal for Session</span>
+</div>
+</section>
+<!-- Performance Trends & Data Grid -->
+<section class="grid grid-cols-12 gap-6">
+<!-- Trend Line Chart -->
+<div class="col-span-12 lg:col-span-7 glass-panel rounded-xl p-8">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-white">Performance Trends</h3>
+<p class="text-on-surface-variant text-body-sm">Velocity consistency across last 10 GS runs</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-primary text-on-primary font-label-caps text-[10px] rounded uppercase">7 Days</button>
+<button class="px-3 py-1 bg-white/5 text-on-surface-variant font-label-caps text-[10px] rounded uppercase hover:bg-white/10">30 Days</button>
+</div>
+</div>
+<div class="h-64 w-full relative">
+<!-- Chart Mockup -->
+<div class="absolute inset-0 flex items-end justify-between gap-2 px-2 pb-6">
+<div class="w-full bg-primary/20 rounded-t-sm relative group transition-all hover:bg-primary/40 h-[60%]">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-container p-2 rounded text-[10px] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20">112 km/h</div>
+</div>
+<div class="w-full bg-primary/20 rounded-t-sm relative group transition-all hover:bg-primary/40 h-[75%]"></div>
+<div class="w-full bg-primary/20 rounded-t-sm relative group transition-all hover:bg-primary/40 h-[65%]"></div>
+<div class="w-full bg-primary/20 rounded-t-sm relative group transition-all hover:bg-primary/40 h-[90%]"></div>
+<div class="w-full bg-primary/40 border-t-2 border-primary rounded-t-sm relative group transition-all h-[95%]"></div>
+<div class="w-full bg-primary/20 rounded-t-sm relative group transition-all hover:bg-primary/40 h-[85%]"></div>
+<div class="w-full bg-primary/20 rounded-t-sm relative group transition-all hover:bg-primary/40 h-[80%]"></div>
+</div>
+<div class="absolute bottom-0 w-full flex justify-between px-2 font-label-caps text-[10px] text-on-surface-variant uppercase">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+</div>
+<!-- Physical Stats Grid -->
+<div class="col-span-12 lg:col-span-5 grid grid-cols-2 gap-4">
+<div class="glass-panel rounded-xl p-5 flex flex-col justify-between border-l-2 border-primary">
+<span class="material-symbols-outlined text-primary mb-2">favorite</span>
+<div>
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase">Heart Rate</span>
+<span class="font-headline-md text-headline-md text-white">164 <span class="text-xs font-normal opacity-50">BPM</span></span>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-5 flex flex-col justify-between">
+<span class="material-symbols-outlined text-tertiary mb-2">bolt</span>
+<div>
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase">Power Output</span>
+<span class="font-headline-md text-headline-md text-white">840 <span class="text-xs font-normal opacity-50">W</span></span>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-5 flex flex-col justify-between">
+<span class="material-symbols-outlined text-secondary mb-2">respiratory_rate</span>
+<div>
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase">VO2 Max</span>
+<span class="font-headline-md text-headline-md text-white">68.2 <span class="text-xs font-normal opacity-50">ml/kg</span></span>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-5 flex flex-col justify-between">
+<span class="material-symbols-outlined text-on-surface mb-2">fitness_center</span>
+<div>
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase">Muscle Fatigue</span>
+<span class="font-headline-md text-headline-md text-white">Low</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+
+<!-- 2. VIEW: GATE SPLITS -->
+<div id="view-gate-splits" class="space-y-8 tab-content hidden">
+<div class="grid grid-cols-12 gap-6">
+<!-- Main Gate Splits Table -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl overflow-hidden">
+<div class="p-6 border-b border-white/5 flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-white">Gate Split Analysis</h3>
+<span class="font-label-caps text-[10px] text-tertiary-container bg-tertiary-container/10 px-2 py-1 rounded">LIVE FEED</span>
+</div>
+<table class="w-full text-left">
+<thead>
+<tr class="bg-white/5 font-label-caps text-[10px] text-on-surface-variant uppercase">
+<th class="px-6 py-4">Sector</th>
+<th class="px-6 py-4">Split Time</th>
+<th class="px-6 py-4">Delta (Ref)</th>
+<th class="px-6 py-4">Top Speed</th>
+<th class="px-6 py-4">Status</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-sm divide-y divide-white/5">
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">Sector 1 (Top)</td>
+<td class="px-6 py-4 text-white">14.28s</td>
+<td class="px-6 py-4 text-error">-0.12s</td>
+<td class="px-6 py-4">98.2 km/h</td>
+<td class="px-6 py-4"><span class="w-2 h-2 rounded-full bg-error inline-block"></span></td>
+</tr>
+<tr class="bg-primary/5 hover:bg-primary/10 transition-colors group border-l-4 border-tertiary-container">
+<td class="px-6 py-4">Sector 2 (Middle)</td>
+<td class="px-6 py-4 text-white">22.15s</td>
+<td class="px-6 py-4 text-primary">+0.45s</td>
+<td class="px-6 py-4">112.5 km/h</td>
+<td class="px-6 py-4"><span class="w-2 h-2 rounded-full bg-primary inline-block shadow-[0_0_8px_rgba(173,198,255,1)]"></span></td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">Sector 3 (Finish)</td>
+<td class="px-6 py-4 text-white">12.04s</td>
+<td class="px-6 py-4 text-primary">+0.08s</td>
+<td class="px-6 py-4">128.4 km/h</td>
+<td class="px-6 py-4"><span class="w-2 h-2 rounded-full bg-primary inline-block"></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Split Analytics Card -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-6 flex flex-col justify-between">
+<h3 class="font-headline-md text-headline-md text-white mb-4">Split Analytics</h3>
+<div class="space-y-4">
+<div class="p-4 bg-white/5 rounded-lg border border-white/5">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase mb-1">Optimal Gate Entry Speed</span>
+<span class="font-headline-lg text-headline-lg text-primary">115.8 <span class="text-body-sm font-normal text-on-surface-variant">km/h</span></span>
+</div>
+<div class="p-4 bg-white/5 rounded-lg border border-white/5">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase mb-1">Average Sector Deviation</span>
+<span class="font-headline-lg text-headline-lg text-tertiary">+0.14 <span class="text-body-sm font-normal text-on-surface-variant">sec</span></span>
+</div>
+<div class="p-4 bg-white/5 rounded-lg border border-white/5">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase mb-1">Telemetry Status</span>
+<span class="text-primary font-body-sm text-body-sm flex items-center gap-2 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-primary inline-block animate-pulse"></span> Active and Synchronized
+                    </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 3. VIEW: VIDEO ANALYSIS -->
+<div id="view-video-analysis" class="space-y-8 tab-content hidden">
+<div class="grid grid-cols-12 gap-6">
+<!-- Video Player Simulation -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl overflow-hidden relative aspect-video flex items-center justify-center bg-black/40">
+<!-- Ambient mountain background image inside player -->
+<img class="absolute inset-0 w-full h-full object-cover opacity-50 filter blur-[2px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5I3YCio7SvFgDMNV03xI72qQ8rWhRguMn0tsk6V-YW2Q8IG9d_6c72EYBKnN_3AvqsRuaKGvecycQyCsJIccyFjDWYE2u9ozrxndoIY-0mi-wyatmtixssNdR2-9I2nyR4BPMkZomSyzRfvPOZBLuB8K6vOOX1OsfY0UHFmrvRTt7YxO-o46UJLH8feu501TX_Mbwab8Sw-xx9GgV2tc8SJydvRTPX4dafR_HA2A4hoi_Z-EBb2Ubd2oIo8s0J_R3MIHxKAGxWmg" alt="Telemetry Skier">
+
+<!-- Frozen Ice UI Overlay (Telemetry HUD) -->
+<div class="absolute inset-0 flex flex-col justify-between p-6 z-10">
+<!-- Top row: Status and telemetry pill -->
+<div class="flex justify-between items-start">
+<div class="bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+<span class="font-label-caps text-[10px] text-white uppercase tracking-wider">RUN 5 - ANALYZING</span>
+</div>
+<div class="bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg flex gap-4 text-xs font-data-mono">
+<div><span class="text-on-surface-variant font-label-caps text-[9px] uppercase block">Gate</span><span class="text-white font-bold">14 / 28</span></div>
+<div class="border-l border-white/10 pl-3"><span class="text-on-surface-variant font-label-caps text-[9px] uppercase block">Time</span><span class="text-white font-bold">34.42s</span></div>
+</div>
+</div>
+
+<!-- Play / Telemetry overlay controls center -->
+<button class="w-16 h-16 rounded-full bg-primary/20 backdrop-blur-lg border border-primary/40 text-primary flex items-center justify-center hover:scale-110 active:scale-95 transition-all self-center shadow-[0_0_30px_rgba(173,198,255,0.25)]">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+
+<!-- Bottom: Scrub bar and live gauges -->
+<div class="space-y-4">
+<!-- Live metrics HUD -->
+<div class="grid grid-cols-3 gap-4">
+<div class="bg-black/60 backdrop-blur-md border border-white/10 p-3 rounded-lg flex flex-col items-center">
+<span class="font-label-caps text-[9px] text-on-surface-variant uppercase">Velocity</span>
+<span class="font-data-mono text-lg font-bold text-white">114.2 km/h</span>
+</div>
+<div class="bg-black/60 backdrop-blur-md border border-white/10 p-3 rounded-lg flex flex-col items-center">
+<span class="font-label-caps text-[9px] text-on-surface-variant uppercase">Lean Angle</span>
+<span class="font-data-mono text-lg font-bold text-primary">34.5°</span>
+</div>
+<div class="bg-black/60 backdrop-blur-md border border-white/10 p-3 rounded-lg flex flex-col items-center">
+<span class="font-label-caps text-[9px] text-on-surface-variant uppercase">G-Force</span>
+<span class="font-data-mono text-lg font-bold text-tertiary">3.2 G</span>
+</div>
+</div>
+
+<!-- Timeline / Scrub bar -->
+<div class="flex items-center gap-4 bg-black/60 backdrop-blur-md border border-white/10 p-3 rounded-lg">
+<span class="font-data-mono text-xs text-white">00:34</span>
+<div class="w-full bg-white/20 h-1 rounded-full relative cursor-pointer">
+<div class="bg-primary h-full w-[60%] rounded-full relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white border-2 border-primary rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
+</div>
+</div>
+<span class="font-data-mono text-xs text-on-surface-variant">00:58</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Video Analysis Side Panel -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-6 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-white mb-2">Video Sessions</h3>
+<p class="text-on-surface-variant text-body-sm mb-6">Select a run to load telemetry data</p>
+<div class="space-y-3">
+<button class="w-full p-4 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-between text-left group hover:bg-primary/15 transition-all">
+<div>
+<span class="font-label-caps text-[9px] text-primary block uppercase">Run 5 (Latest)</span>
+<span class="font-headline-md text-sm text-white font-semibold block">Giant Slalom - Run 2</span>
+</div>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</button>
+<button class="w-full p-4 bg-white/3 border border-white/5 rounded-lg flex items-center justify-between text-left group hover:bg-white/5 transition-all">
+<div>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">Run 4</span>
+<span class="font-headline-md text-sm text-white font-semibold block">Giant Slalom - Run 1</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</button>
+<button class="w-full p-4 bg-white/3 border border-white/5 rounded-lg flex items-center justify-between text-left group hover:bg-white/5 transition-all">
+<div>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">Run 3</span>
+<span class="font-headline-md text-sm text-white font-semibold block">Training Session - Slalom</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+
+<!-- Calibration Button -->
+<button class="w-full py-3 bg-white/5 border border-white/10 rounded-lg font-label-caps text-[10px] uppercase hover:bg-white/10 active:scale-95 transition-all text-white font-bold tracking-wider">
+Calibrate Sensor Sync
+</button>
+</div>
+</div>
+</div>
+
+<!-- 4. VIEW: SEASON RANKINGS -->
+<div id="view-season-rankings" class="space-y-8 tab-content hidden">
+<div class="grid grid-cols-12 gap-6">
+<!-- Global Leaderboard Table -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl overflow-hidden">
+<div class="p-6 border-b border-white/5 flex justify-between items-center">
+<div>
+<h3 class="font-headline-md text-headline-md text-white">World Cup Standings</h3>
+<p class="text-on-surface-variant text-body-sm">Giant Slalom Disciplines - Season 2026</p>
+</div>
+<span class="font-label-caps text-[10px] text-primary bg-primary/10 px-2 py-1 rounded">UPDATED TODAY</span>
+</div>
+<table class="w-full text-left">
+<thead>
+<tr class="bg-white/5 font-label-caps text-[10px] text-on-surface-variant uppercase">
+<th class="px-6 py-4">Rank</th>
+<th class="px-6 py-4">Athlete</th>
+<th class="px-6 py-4">Country</th>
+<th class="px-6 py-4">Points</th>
+<th class="px-6 py-4">Behind</th>
+<th class="px-6 py-4">Trend</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-sm divide-y divide-white/5">
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4 text-white font-bold">#01</td>
+<td class="px-6 py-4 text-white font-semibold">Mikaela Shiffrin</td>
+<td class="px-6 py-4 text-on-surface-variant">USA</td>
+<td class="px-6 py-4 text-white font-bold">680</td>
+<td class="px-6 py-4 text-on-surface-variant">-</td>
+<td class="px-6 py-4"><span class="material-symbols-outlined text-secondary">remove</span></td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4 text-white font-bold">#02</td>
+<td class="px-6 py-4 text-white font-semibold">Petra Vlhová</td>
+<td class="px-6 py-4 text-on-surface-variant">SVK</td>
+<td class="px-6 py-4 text-white font-bold">595</td>
+<td class="px-6 py-4 text-on-surface-variant">-85</td>
+<td class="px-6 py-4"><span class="material-symbols-outlined text-secondary">remove</span></td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4 text-white font-bold">#03</td>
+<td class="px-6 py-4 text-white font-semibold">Federica Brignone</td>
+<td class="px-6 py-4 text-on-surface-variant">ITA</td>
+<td class="px-6 py-4 text-white font-bold">510</td>
+<td class="px-6 py-4 text-on-surface-variant">-170</td>
+<td class="px-6 py-4"><span class="material-symbols-outlined text-error">arrow_drop_down</span></td>
+</tr>
+<!-- Active Athlete Highlight: Jess -->
+<tr class="bg-primary/5 border-l-4 border-tertiary-container hover:bg-primary/10 transition-colors group">
+<td class="px-6 py-4 text-primary font-bold">#04</td>
+<td class="px-6 py-4 text-white font-bold">Jess (You)</td>
+<td class="px-6 py-4 text-primary">SUI</td>
+<td class="px-6 py-4 text-primary font-bold">485</td>
+<td class="px-6 py-4 text-primary">-195</td>
+<td class="px-6 py-4"><span class="material-symbols-outlined text-primary">arrow_drop_up</span></td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4 text-white font-bold">#05</td>
+<td class="px-6 py-4 text-white font-semibold">Lara Gut-Behrami</td>
+<td class="px-6 py-4 text-on-surface-variant">SUI</td>
+<td class="px-6 py-4 text-white font-bold">420</td>
+<td class="px-6 py-4 text-on-surface-variant">-260</td>
+<td class="px-6 py-4"><span class="material-symbols-outlined text-secondary">remove</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- Season Points Chart / Sidebar -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-6 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-white mb-2">Points Progression</h3>
+<p class="text-on-surface-variant text-body-sm mb-6">Jess's trajectory towards the podium</p>
+<div class="space-y-6">
+<div class="relative pl-6 border-l border-white/10">
+<div class="absolute -left-1.5 top-1.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-background"></div>
+<span class="font-label-caps text-[9px] text-primary block uppercase">Sölden Giant Slalom</span>
+<span class="text-white text-sm font-bold font-headline-md">1st Place (+100 pts)</span>
+</div>
+<div class="relative pl-6 border-l border-white/10">
+<div class="absolute -left-1.5 top-1.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-background"></div>
+<span class="font-label-caps text-[9px] text-primary block uppercase">Killington Giant Slalom</span>
+<span class="text-white text-sm font-bold font-headline-md">3rd Place (+60 pts)</span>
+</div>
+<div class="relative pl-6 border-l border-white/10">
+<div class="absolute -left-1.5 top-1.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-background"></div>
+<span class="font-label-caps text-[9px] text-primary block uppercase">Courchevel Giant Slalom</span>
+<span class="text-white text-sm font-bold font-headline-md">2nd Place (+80 pts)</span>
+</div>
+<div class="relative pl-6">
+<div class="absolute -left-1.5 top-1.5 w-3.5 h-3.5 rounded-full bg-tertiary border-2 border-background"></div>
+<span class="font-label-caps text-[9px] text-tertiary block uppercase">Next Event: Kranjska Gora</span>
+<span class="text-white text-sm font-bold font-headline-md">Target: Podium Finish</span>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-white/5">
+<div class="flex justify-between items-center text-sm font-data-mono">
+<span class="text-on-surface-variant">Podium Probability</span>
+<span class="text-primary font-bold">78%</span>
+</div>
+<div class="w-full bg-white/10 h-1.5 rounded-full mt-2">
+<div class="bg-primary h-full w-[78%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 5. VIEW: TRAINING LOGS -->
+<div id="view-training-logs" class="space-y-8 tab-content hidden">
+<div class="grid grid-cols-12 gap-6">
+<!-- Training Log Feed -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl p-6">
+<h3 class="font-headline-md text-headline-md text-white mb-6">Recent Training</h3>
+<div class="space-y-6">
+<div class="flex gap-4 relative">
+<div class="w-0.5 bg-white/10 absolute left-5 top-10 bottom-[-24px]"></div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center shrink-0 border border-white/10 z-10">
+<span class="material-symbols-outlined text-primary text-sm">ac_unit</span>
+</div>
+<div class="pb-6 border-b border-white/5 w-full">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase mb-1">Today, 08:30 AM</span>
+<p class="text-white font-body-lg text-body-sm font-semibold mb-1">Morning Slalom Drills</p>
+<p class="text-on-surface-variant text-[12px] leading-relaxed">Focus on edge pressure and early initiation. 12 runs completed.</p>
+</div>
+</div>
+<div class="flex gap-4 relative">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center shrink-0 border border-white/10 z-10">
+<span class="material-symbols-outlined text-tertiary text-sm">fitness_center</span>
+</div>
+<div class="w-full">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase mb-1">Yesterday, 04:00 PM</span>
+<p class="text-white font-body-lg text-body-sm font-semibold mb-1">Hypertrophy - Lower Body</p>
+<p class="text-on-surface-variant text-[12px] leading-relaxed">Squat max test: 145kg. Fatigue levels rising as expected.</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 py-2 border border-white/10 rounded font-label-caps text-[10px] uppercase hover:bg-white/5 transition-colors">View All Logs</button>
+</div>
+
+<!-- Training Stats Sidebar -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-6 flex flex-col justify-between">
+<h3 class="font-headline-md text-headline-md text-white mb-4">Training Stats</h3>
+<div class="space-y-4">
+<div class="p-4 bg-white/5 rounded-lg border border-white/5">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase mb-1">Total Training Hours</span>
+<span class="font-headline-lg text-headline-lg text-white">48.5 <span class="text-body-sm font-normal text-on-surface-variant">hrs</span></span>
+</div>
+<div class="p-4 bg-white/5 rounded-lg border border-white/5">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase mb-1">Total Slalom Runs</span>
+<span class="font-headline-lg text-headline-lg text-white">142 <span class="text-body-sm font-normal text-on-surface-variant">runs</span></span>
+</div>
+<div class="p-4 bg-white/5 rounded-lg border border-white/5">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase mb-1">Recovery Cycles</span>
+<span class="font-headline-lg text-headline-lg text-primary">12 <span class="text-body-sm font-normal text-on-surface-variant">completed</span></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</main>
+<!-- Contextual FAB -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-on-tertiary-container rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 700;">add</span>
+</button>
+<script>
+        // Micro-interaction for hover glow tracking
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Tab Switching Controller
+        const tabs = document.querySelectorAll('[data-tab]');
+        const views = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.getAttribute('data-tab');
+                
+                // Hide all views
+                views.forEach(view => {
+                    view.classList.add('hidden');
+                });
+                
+                // Show target view
+                const targetView = document.getElementById(`view-${targetTab}`);
+                if (targetView) {
+                    targetView.classList.remove('hidden');
+                }
+                
+                // Reset all tabs to inactive style
+                tabs.forEach(t => {
+                    t.classList.remove('text-primary', 'font-bold', 'border-l-4', 'border-tertiary-container', 'pl-4');
+                    t.classList.add('text-on-surface-variant', 'pl-5', 'border-transparent');
+                    
+                    // Reset icon properties
+                    const icon = t.querySelector('.nav-icon');
+                    if (icon) {
+                        icon.style.variationSettings = "'FILL' 0";
+                    }
+                });
+                
+                // Set clicked tab to active style
+                tab.classList.remove('text-on-surface-variant', 'pl-5', 'border-transparent');
+                tab.classList.add('text-primary', 'font-bold', 'border-l-4', 'border-tertiary-container', 'pl-4');
+                
+                const activeIcon = tab.querySelector('.nav-icon');
+                if (activeIcon) {
+                    activeIcon.style.variationSettings = "'FILL' 1";
+                }
+            });
+        });
+    </script>
+</body></html>
